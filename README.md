@@ -55,8 +55,8 @@ Output files:
 
 ## Authors
 
-Eun Lim Jang, Wendy Brizuela, Vivianna Vera, Audrey Garcia
-UCLA Geography 181C Final Project
+Eun Lim Jang, Wendy Brizuela, Vivianna Vera, Audrey Garcia \
+UCLA Geography 181C Final Project \
 Spring 2026
 
 
