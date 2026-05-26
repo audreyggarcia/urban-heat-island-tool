@@ -24,6 +24,7 @@ class Toolbox(object):
     def __init__(self):
         self.label = "Urban Heat Island Analysis"
         self.alias = "uhi"
+        # self.tools = [NDVI, NDBI, Celsius] define as such when the tools are ready
         self.tools = [Celsius]
 
 ####################################################################################################################
@@ -508,15 +509,15 @@ class NDBI:
 class Celsius:
     def __init__(self):
         """Define the tool (tool name is the name of the class)."""
-        self.label = "Transform Kelvin to Celsius"
-        self.description = "Transform a raster containing a thermal band from Kelvin to Celsius."
+        self.label = "Transform Digital Number Thermal Band to Celsius"
+        self.description = "Transform a raster containing a thermal band from digital numbers to Celsius."
 
     def getParameterInfo(self):
         """Define the tool parameters."""
 
         param0 = arcpy.Parameter(
             displayName = "Input Raster",
-            name="kelvin_raster",
+            name="dn_raster",
             datatype="Raster Layer",
             parameterType="Required",
             direction="Input"
@@ -561,7 +562,8 @@ class Celsius:
         input_rast = parameters[0].valueAsText
 
         # Raster algebra
-        kelvin = arcpy.Raster(input_rast)
+        dn = arcpy.Raster(input_rast)
+        kelvin = (dn *  0.00341802) + 149.0
         celsius = kelvin - 273.15
 
         # Save to specified path
