@@ -24,7 +24,7 @@ The tool was built to run on ArcGIS Pro 3.7. It requires the Spatial Analyst and
 
 ### Installing
 
-* The .tbx file containing the script tool can be found in this repository.
+* The pythonToolbox folder contains the necessary files for download. Download the whole folder and drag the urbanheatisland.pyt file into your ArcGIS Pro project.
 
 ### Using the Tool
 
