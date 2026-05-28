@@ -510,13 +510,13 @@ class Celsius:
     def __init__(self):
         """Define the tool (tool name is the name of the class)."""
         self.label = "Transform Digital Number Thermal Band to Celsius"
-        self.description = "Transform a raster containing a thermal band from digital numbers to Celsius."
+        self.description = "Transform the thermal band of a Landsat raster from digital numbers to Celsius."
 
     def getParameterInfo(self):
         """Define the tool parameters."""
 
         param0 = arcpy.Parameter(
-            displayName = "Input Raster",
+            displayName = "Input Landsat Multiband Raster",
             name="dn_raster",
             datatype="Raster Layer",
             parameterType="Required",
@@ -524,14 +524,22 @@ class Celsius:
         )
 
         param1 = arcpy.Parameter(
-            displayName = "Output Raster",
+            displayName = "Output Thermal Raster",
             name = "celsius_raster",
             datatype = "Raster Layer",
             parameterType="Output",
             direction="Output"
         )
 
-        params = [param0, param1]
+        param2 = arcpy.Parameter(
+            displayName = "Thermal Band Number",
+            name = "thermal_band",
+            datatype = "GPDouble",
+            parameterType = "Required",
+            direction="Input"
+        )
+
+        params = [param0, param2, param1]
 
         return params
     
@@ -558,19 +566,22 @@ class Celsius:
     def execute(self, parameters, messages):
         """The source code of the tool."""
 
-        # Access input raster
+        # Access input raster and thermal band number
         input_rast = parameters[0].valueAsText
+        band_num = parameters[1].valueAsText
+
+        # Access thermal band
+        dn = arcpy.Raster(input_rast + f"\\Band_{band_num}")
 
         # Raster algebra
-        dn = arcpy.Raster(input_rast)
         kelvin = (dn *  0.00341802) + 149.0
         celsius = kelvin - 273.15
 
         # Save to specified path
-        out_path = parameters[1].valueAsText    # use either .value (access object) or .valueAsText (access text input, file path)
+        out_path = parameters[2].valueAsText    # use either .value (access object) or .valueAsText (access text input, file path)
         celsius.save(out_path)
 
-        arcpy.SetParameterAsText(1, celsius)
+        arcpy.SetParameterAsText(2, celsius)
 
         arcpy.AddMessage("Raster layer saved to specified path.")
 
